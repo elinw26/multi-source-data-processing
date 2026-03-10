@@ -37,13 +37,17 @@ The system is organized into two main components and one intermediate storage la
 
 ```
 Source Data Sheets
-        ↓
-Component A: Source Data Management
-        ↓
+        │
+        ▼
+Component A — Source Data Management
+        │
+        ▼
 JSON Intermediate Storage (Google Drive)
-        ↓
-Component B: Data Matching & Analysis
-        ↓
+        │
+        ▼
+Component B — Data Matching & Analysis
+        │
+        ▼
 Result / Analysis Sheets
 ```
 
@@ -55,13 +59,13 @@ Each stage focuses on a specific responsibility, allowing the workflow to remain
 
 ```
 src/
-    component_A_source_management/
-    component_B_matching_analysis/
+├─ component_A_source_management/
+└─ component_B_matching_analysis/
 
 docs/
-    architecture.md
-    workflow.md
-    code-structure.md
+├─ architecture.md
+├─ workflow.md
+└─ code-structure.md
 ```
 
 - **src** contains the implementation of the automation system
