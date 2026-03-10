@@ -121,9 +121,9 @@ Typical operations include:
 
 Detailed documentation is available in the **docs** directory:
 
-- System architecture → `docs/architecture.md`
-- Data workflow explanation → `docs/workflow.md`
-- Code structure explanation → `docs/code-structure.md`
+- System architecture → [docs/architecture.md](docs/architecture.md)
+- Data workflow explanation → [docs/workflow.md](docs/workflow.md)
+- Code structure explanation → [docs/code-structure.md](docs/code-structure.md)
 
 These documents describe the internal logic and module responsibilities in more detail.
 
