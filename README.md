@@ -100,4 +100,18 @@ docs/
 
 - represents an intermediate stage between simple automation and structured system design  
 - introduces modular processing and reusable data layers  
-- serves as a foundation for further system evolution  
+- serves as a foundation for further system evolution
+
+---
+
+## Related Projects
+
+This project represents an intermediate stage in an evolving automation workflow:
+
+- [Ticket Data Matching System with Incremental Processing](https://github.com/elinw26/ticket-data-matching-system)  
+  Extends this approach by introducing reusable historical datasets and incremental processing logic  
+
+- [Basic Data Processing Automation](https://github.com/elinw26/basic-data-processing-automation)  
+  Earlier stage focusing on automating single-workflow spreadsheet processing  
+
+This project establishes structured data processing and intermediate storage, forming the foundation for more advanced data matching systems.
