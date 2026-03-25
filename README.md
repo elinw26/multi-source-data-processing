@@ -1,149 +1,103 @@
-# Multi-Source Data Processing Automation System
+# Multi-Source Data Processing Automation
 
-This project is a spreadsheet automation system built with **Google Apps Script**.
-
-It is designed to manage and process data collected from multiple source sheets.  
-The system organizes source data, stores structured intermediate data in JSON format, and performs matching and analysis to generate structured result tables.
-
-The project demonstrates how a spreadsheet-based workflow can be structured into modular processing components.
+> Automates data processing across multiple spreadsheet sources by introducing structured intermediate storage and modular processing logic.
 
 ---
 
-# Project Overview
+## Project Overview
 
-In many collaborative workflows, data is collected from multiple spreadsheets maintained by different teams or contributors.
+In collaborative workflows, data is often collected from multiple spreadsheets maintained by different contributors.
 
-Managing these sources manually can become difficult when:
+Managing and processing these sources manually becomes difficult when:
 
-- multiple data sources need to be tracked
-- data formats are inconsistent
-- records must be matched across sheets
-- intermediate results need to be reused
+- multiple data sources need to be tracked  
+- data formats are inconsistent  
+- records must be matched across sheets  
 
-This project introduces a structured automation workflow that separates **data source management**, **intermediate storage**, and **data analysis** into different components.
-
-The system helps to:
-
-- organize multiple data sources
-- generate structured intermediate datasets
-- simplify cross-sheet data matching
-- support downstream analysis workflows
+This project introduces a structured automation workflow to organize data sources, generate reusable datasets, and support cross-source analysis.
 
 ---
 
-# System Architecture
+## Problem
 
-The system is organized into two main components and one intermediate storage layer.
+Manual handling of multi-source spreadsheet data leads to:
 
-```
+- fragmented data across multiple sheets  
+- repeated data preparation work  
+- complex and error-prone matching processes  
+
+As data volume increases, these workflows become inefficient and difficult to maintain.
+
+---
+
+## Design
+
+The system is structured around three core decisions:
+
+- **Centralized intermediate dataset (JSON)**  
+  Converts spreadsheet data into structured JSON for reuse  
+
+- **Separation of data collection and analysis**  
+  Isolates source management from matching logic  
+
+- **Modular processing components**  
+  Divides the workflow into independent stages for easier maintenance  
+
+---
+
+## Result
+
+- organizes fragmented data sources into structured datasets
+- reduces repeated data preparation work  
+- simplifies cross-sheet data matching  
+- improves maintainability through modular design  
+
+---
+
+## Workflow (Simplified)
+
+```text
 Source Data Sheets
-        │
-        ▼
-Component A — Source Data Management
-        │
-        ▼
-JSON Intermediate Storage (Google Drive)
-        │
-        ▼
-Component B — Data Matching & Analysis
-        │
-        ▼
-Result / Analysis Sheets
+   ↓
+Generate JSON Dataset
+   ↓
+Store in Google Drive
+   ↓
+Load for Matching
+   ↓
+Process Data
+   ↓
+Write Results
 ```
-
-Each stage focuses on a specific responsibility, allowing the workflow to remain modular and easier to maintain.
 
 ---
 
-# Project Structure
+## Project Structure
 
-```
+```text
 src/
-├─ component_A_source_management/
-└─ component_B_matching_analysis/
+    component_A_source_management/
+    component_B_matching_analysis/
 
 docs/
-├─ architecture.md
-├─ workflow.md
-└─ code-structure.md
+    architecture.md
+    workflow.md
+    code-structure.md
 ```
 
-- **src** contains the implementation of the automation system
-- **docs** contains detailed documentation describing system design and module responsibilities
+---
+
+## Technologies
+
+- Google Apps Script  
+- JavaScript  
+- Google Sheets  
+- JSON  
 
 ---
 
-# Component Overview
+## Notes
 
-## Component A — Source Data Management
-
-Responsible for organizing and maintaining the list of data sources.
-
-Main functions include:
-
-- generating JSON datasets from configured source sheets
-- updating individual source entries
-- removing obsolete source data
-- preparing structured intermediate data
-
-The processed data is stored as JSON files for later use.
-
----
-
-## JSON Intermediate Storage
-
-Structured JSON files stored in Google Drive serve as the intermediate data layer.
-
-This layer separates:
-
-- **data collection**
-- **data analysis**
-
-Benefits include:
-
-- reusable datasets
-- simplified data access
-- reduced direct dependency on source sheets
-
----
-
-## Component B — Data Matching & Analysis
-
-Responsible for reading intermediate JSON data and performing matching operations.
-
-Typical operations include:
-
-- loading intermediate datasets
-- generating sample datasets
-- matching records across sources
-- preparing structured analysis results
-- writing results into analysis sheets
-
----
-
-# Documentation
-
-Detailed documentation is available in the **docs** directory:
-
-- System architecture → [docs/architecture.md](docs/architecture.md)
-- Data workflow explanation → [docs/workflow.md](docs/workflow.md)
-- Code structure explanation → [docs/code-structure.md](docs/code-structure.md)
-
-These documents describe the internal logic and module responsibilities in more detail.
-
----
-
-# Technologies
-
-- Google Apps Script
-- JavaScript
-- Google Sheets Automation
-- JSON Data Processing
-
----
-
-# Status
-
-This repository contains a simplified public version of the automation system.
-
-Sensitive information and internal workflow details have been removed before publication.
+- represents an intermediate stage between simple automation and structured system design  
+- introduces modular processing and reusable data layers  
+- serves as a foundation for further system evolution  
