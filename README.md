@@ -1,117 +1,193 @@
 # Multi-Source Data Processing Automation
 
-> Automates data processing across multiple spreadsheet sources by introducing structured intermediate storage and modular processing logic.
+> A structured data processing system for managing participant records
+> across multiple sources, tracking engagement progression,
+> and analyzing source channel effectiveness.
 
 ---
 
 ## Project Overview
 
-In collaborative workflows, data is often collected from multiple spreadsheets maintained by different contributors.
+In workflows where participants are recruited through multiple channels
+and progress through a series of structured engagement steps,
+tracking and analyzing data manually becomes increasingly difficult:
 
-Managing and processing these sources manually becomes difficult when:
+- participant records are scattered across multiple source files
+- engagement progression across multiple steps is tracked inconsistently
+- cross-source matching requires repeated manual work
+- channel effectiveness cannot be compared systematically
 
-- multiple data sources need to be tracked  
-- data formats are inconsistent  
-- records must be matched across sheets  
-
-This project introduces a structured automation workflow to organize data sources, generate reusable datasets, and support cross-source analysis.
+This project introduces a modular data processing system that centralizes
+source data into structured JSON datasets, enables cross-source matching,
+and tracks participant progression through multiple engagement steps.
 
 ---
 
 ## Problem
 
-Manual handling of multi-source spreadsheet data leads to:
+Managing participant data from multiple sources leads to:
 
-- fragmented data across multiple sheets  
-- repeated data preparation work  
-- complex and error-prone matching processes  
+- fragmented records across many contributor sheets
+- repeated data preparation work for each processing run
+- no reliable way to match participants against historical source data
+- increasing processing time as data volume and field complexity grow
 
-As data volume increases, these workflows become inefficient and difficult to maintain.
-
----
-
-## Design
-
-The system is structured around three core decisions:
-
-- **Centralized intermediate dataset (JSON)**  
-  Converts spreadsheet data into structured JSON for reuse  
-
-- **Separation of data collection and analysis**  
-  Isolates source management from matching logic  
-
-- **Modular processing components**  
-  Divides the workflow into independent stages for easier maintenance  
+Unlike simpler ID-only matching systems, this project handles
+multi-field participant records including source channel attributes,
+making the data volume and processing complexity significantly higher.
 
 ---
 
-## Result
+## System Components
 
-- organizes fragmented data sources into structured datasets
-- reduces repeated data preparation work  
-- simplifies cross-sheet data matching  
-- improves maintainability through modular design  
+The system consists of two main components:
+
+### Component A — Source Data Management (Google Apps Script)
+
+Manages the creation, updating, and deletion of structured JSON datasets
+from source spreadsheets.
+
+Key functions:
+- generates structured JSON files from source sheet data
+- separates participant IDs (A_data) from associated metadata (B_to_H_data)
+  into a two-part data structure per source
+- updates individual source columns without affecting other data
+- removes obsolete sources from the dataset
+- manages JSON files in a dedicated Google Drive folder
+
+### Component B — Engagement Tracking and Analysis (Google Apps Script)
+
+Matches participant records against historical source data and tracks
+progression through engagement steps.
+
+Key functions:
+- generates sample datasets by combining data from multiple sheets
+- matches participant IDs against historical JSON source datasets
+- tracks participant progression across six engagement steps
+  (Step 1 through Step 6)
+- writes matched results back to corresponding step sheets
+- real-time source matching against current participant records
+- data analysis mapping for cross-source comparison
+- time tracking and work log registration per processing session
+- quality prediction matching to assess likely engagement outcomes
+  based on source channel attributes
 
 ---
 
-## Workflow (Simplified)
+## Architecture
 
 ```text
-Source Data Sheets
-   ↓
-Generate JSON Dataset
-   ↓
-Store in Google Drive
-   ↓
-Load for Matching
-   ↓
-Process Data
-   ↓
-Write Results
+Source Spreadsheets (Multi-field Participant Records)
+        │
+        ▼
+Component A: JSON Generation (Google Apps Script)
+        │
+        ▼
+JSON Dataset on Google Drive
+(Participant IDs + Source Metadata)
+        │
+        ▼
+Component B: Matching + Progression Tracking (Google Apps Script)
+        │
+        ▼
+Step Sheets (Step 1 — Step 6)
++ Analysis Output
 ```
 
 ---
 
-## Project Structure
+## Data Structure
 
-```text
-src/
-    component_A_source_management/
-    component_B_matching_analysis/
+Each JSON dataset entry separates participant data into two layers:
 
-docs/
-    architecture.md
-    workflow.md
-    code-structure.md
+```json
+{
+  "source_column": {
+    "A_data": ["participant_id_1", "participant_id_2"],
+    "B_to_H_data": ["metadata_field_1", "metadata_field_2", "..."]
+  }
+}
 ```
+
+**A_data** contains participant IDs used for matching.
+**B_to_H_data** contains associated source metadata used for
+analysis and quality prediction.
+
+This separation allows ID matching and metadata retrieval
+to be handled independently.
+
+---
+
+## Design Decisions
+
+**Two-part data structure**
+Separating IDs from metadata allows the matching logic to operate
+on a lightweight identifier layer, while the full metadata is
+retrieved only when needed for analysis.
+
+**Modular source management**
+Each source can be added, updated, or removed independently
+without affecting other sources in the dataset.
+This supports evolving workflows where sources change over time.
+
+**Step-based progression tracking**
+Participant progression is tracked across six discrete steps,
+each with its own processing logic and output sheet.
+This enables per-step analysis and comparison across sources.
+
+**Timeout handling and trigger-based continuation**
+Google Apps Script has a 6-minute execution limit.
+The system uses time-based triggers to continue processing
+large datasets across multiple runs.
+
+**Planned transition to Python**
+As data volume grows, the current GAS-based implementation
+faces compounding limitations beyond execution time:
+
+- larger multi-field datasets take longer to scan per trigger run
+- network instability can interrupt online processing mid-run
+- recovery from mid-run failures requires manual intervention
+- trigger-based continuation becomes increasingly fragile
+  as data complexity increases
+
+A Python-based desktop application is planned to replace
+the online processing layer, providing offline execution,
+more reliable error handling, and better scalability
+for large multi-field datasets.
 
 ---
 
 ## Technologies
 
-- Google Apps Script  
-- JavaScript  
-- Google Sheets  
-- JSON  
+| Technology | Role |
+|---|---|
+| Google Apps Script | Data processing, JSON management, UI |
+| JavaScript | Core processing logic |
+| JSON | Structured dataset storage with two-part data model |
+| Google Sheets | Data input, output, and step tracking |
+| Google Drive | Centralized JSON file storage |
 
 ---
 
-## Notes
+## Implementation Notes
 
-- represents an intermediate stage between simple automation and structured system design  
-- introduces modular processing and reusable data layers  
-- serves as a foundation for further system evolution
+This project contains internal operational data and workflow details
+that are not published in this repository.
+
+The repository contains documentation describing the system design,
+data structure, and processing logic.
 
 ---
 
 ## Related Projects
 
-This project represents an intermediate stage in an evolving automation workflow:
-
-- [Ticket Data Matching System with Incremental Processing](https://github.com/elinw26/ticket-data-matching-system)  
-  Extends this approach by introducing reusable historical datasets and incremental processing logic  
+This project represents an intermediate stage in an evolving
+data management system:
 
 - [Basic Data Processing Automation](https://github.com/elinw26/basic-data-processing-automation)  
-  Earlier stage focusing on automating single-workflow spreadsheet processing  
+  Earlier stage focusing on single-workflow participant
+  engagement record processing
 
-This project establishes structured data processing and intermediate storage, forming the foundation for more advanced data matching systems.
+- [Ticket Data Matching System with Incremental Processing](https://github.com/elinw26/ticket-data-matching-system)  
+  Extends the matching approach with incremental processing,
+  simplified ID-only matching, and a desktop application interface
