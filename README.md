@@ -103,13 +103,17 @@ Each JSON dataset entry separates participant data into two layers:
 ```json
 {
   "source_column": {
-    "A_data": ["participant_id_1", "participant_id_2"],
-    "B_to_H_data": ["metadata_field_1", "metadata_field_2", "..."]
+    "A_data": ["id_1", "id_2"],
+    "B_to_H_data": ["metadata_1", "metadata_2", "..."]
   }
 }
 ```
 
 **A_data** contains participant IDs used for matching.
+These IDs use the same format as the Historical Dataset
+in the matching system, allowing data to flow between
+the two systems without conversion.
+
 **B_to_H_data** contains associated source metadata used for
 analysis and quality prediction.
 
